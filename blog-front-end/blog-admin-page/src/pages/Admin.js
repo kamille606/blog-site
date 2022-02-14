@@ -1,19 +1,18 @@
-import React, {useState} from 'react';
-import {Layout, Menu, Breadcrumb} from 'antd';
+import React, {useState} from 'react'
+import {Route, Routes} from 'react-router-dom'
+import {Layout, Menu, Breadcrumb} from 'antd'
 import {UserOutlined, FileOutlined, DesktopOutlined, PieChartOutlined} from '@ant-design/icons'
 import '../static/css/Admin.css'
+import AddArticle from "./AddArticle";
 
 const {Header, Content, Footer, Sider} = Layout;
 const {SubMenu} = Menu;
 
 function Admin() {
-
     const [collapsed, setCollapsed] = useState(false)
-
     const onCollapse = collapsed => {
         setCollapsed(collapsed)
     };
-
     return (
         <Layout style={{minHeight: '100vh'}}>
             <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
@@ -49,13 +48,18 @@ function Admin() {
                         <Breadcrumb.Item>后台管理</Breadcrumb.Item>
                         <Breadcrumb.Item>工作台</Breadcrumb.Item>
                     </Breadcrumb>
-                    <div style={{padding: 24, background: '#fff', minHeight: 360}}>博客工作台.</div>
+                    <div style={{padding: 24, background: '#fff', minHeight: 360}}>
+                        <div>
+                            <Routes>
+                                <Route path='/index/' component={AddArticle}/>
+                            </Routes>
+                        </div>
+                    </div>
                 </Content>
                 <Footer style={{textAlign: 'center'}}>JSPang.com</Footer>
             </Layout>
         </Layout>
     )
-
 }
 
 export default Admin

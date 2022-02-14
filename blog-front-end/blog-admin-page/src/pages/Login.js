@@ -6,11 +6,9 @@ import 'antd/dist/antd.css'
 import '../static/css/Login.css'
 
 function Login() {
-
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-
     const checkLogin = () => {
         setIsLoading(true)
         setTimeout(() => {

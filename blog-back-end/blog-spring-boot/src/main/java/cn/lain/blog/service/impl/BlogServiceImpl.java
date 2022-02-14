@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BlogServiceImpl implements BlogService {
 
-    private final BlogArticleService articleService;
     private final BlogTypeService typeService;
+    private final BlogArticleService articleService;
 
     @Override
     public List<BlogVo> blogList(Integer typeId) {
