@@ -1,0 +1,43 @@
+server:
+  port: 6060
+  servlet:
+    context-path: /
+spring:
+  application:
+    name: lblog
+  datasource:
+    url: jdbc:mysql://49.234.90.45:3306/lblog?useSSL=false&serverTimezone=UTC&characterEncoding=utf8&allowMultiQueries=true
+    username: lain
+    password: lain52001
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      read-only: true
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      maximum-pool-size: 60
+      minimum-idle: 10
+  jackson:
+    date-format: java.text.SimpleDateFormat
+    time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false
+  redis:
+    host: 49.234.90.45
+    port: 6379
+    database: 0
+    lettuce:
+      pool:
+        max-active: 500
+        max-wait: -1
+        max-idle: 10
+        min-idle: 0
+      shutdown-timeout: 30000
+  cache:
+    cache-names: redisCache
+    type: redis
+mybatis-plus:
+  type-aliases-package: cn.lblog.domain.po
+  type-aliases-super-type: java.lang.Object
+  type-enums-package: cn.lain.blog.constant.enums
+  mapper-locations: classpath:mapper/*.xml
