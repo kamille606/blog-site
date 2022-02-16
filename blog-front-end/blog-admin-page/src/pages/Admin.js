@@ -49,11 +49,9 @@ function Admin() {
                         <Breadcrumb.Item>工作台</Breadcrumb.Item>
                     </Breadcrumb>
                     <div style={{padding: 24, background: '#fff', minHeight: 360}}>
-                        <div>
-                            <Routes>
-                                <Route path='/index/' component={AddArticle}/>
-                            </Routes>
-                        </div>
+                        <Routes>
+                            <Route path='/' exact element={<AddArticle/>}/>
+                        </Routes>
                     </div>
                 </Content>
                 <Footer style={{textAlign: 'center'}}>JSPang.com</Footer>
