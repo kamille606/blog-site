@@ -6,6 +6,7 @@ import java.util.Date;
 
 @Data
 public class BlogType {
+
     /**
     * 主键
     */
@@ -40,4 +41,5 @@ public class BlogType {
     * 创建时间
     */
     private Date gmtCreate;
+
 }

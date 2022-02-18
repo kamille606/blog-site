@@ -1,4 +1,4 @@
-let ipUrl = 'http://localhost:6060'
+let ipUrl = 'http://localhost:6060/api'
 
 let servicePath = {
     getBlogInfo: ipUrl + '/blog/info?id=',

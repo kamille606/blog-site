@@ -6,6 +6,7 @@ import java.util.Date;
 
 @Data
 public class BlogArticle {
+
     /**
     * 主键
     */
@@ -37,6 +38,11 @@ public class BlogArticle {
     private Integer viewCount;
 
     /**
+     * 数据状态00删除01正常
+     */
+    private String status;
+
+    /**
     * 修改时间
     */
     private Date gmtModify;
@@ -45,4 +51,5 @@ public class BlogArticle {
     * 创建时间
     */
     private Date gmtCreate;
+
 }

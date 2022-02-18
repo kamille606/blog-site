@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/api")
 @RequiredArgsConstructor
 public class BlogController {
 
@@ -17,20 +18,17 @@ public class BlogController {
 
     @RequestMapping(value = "/blog/list/{id}", method = RequestMethod.GET)
     public ResultData<List<BlogVo>> blogList(@PathVariable("id") final Integer typeId) {
-        List<BlogVo> blogVoList = blogService.blogList(typeId);
-        return ResultData.success(blogVoList);
+        return ResultData.success(blogService.blogList(typeId));
     }
 
     @RequestMapping(value = "/blog/info", method = RequestMethod.GET)
     public ResultData<BlogVo> blogInfo(@RequestParam("id") final Integer id) {
-        BlogVo blogVo = blogService.blogInfo(id);
-        return ResultData.success(blogVo);
+        return ResultData.success(blogService.blogInfo(id));
     }
 
     @RequestMapping(value = "/type/list", method = RequestMethod.GET)
     public ResultData<List<TypeVo>> typeList() {
-        List<TypeVo> typeVos = blogService.typeList();
-        return ResultData.success(typeVos);
+        return ResultData.success(blogService.typeList());
     }
 
 }

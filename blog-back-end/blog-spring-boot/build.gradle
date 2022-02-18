@@ -7,8 +7,6 @@ plugins {
 group 'cn.lain.blog'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 repositories {
     mavenCentral()
 }
@@ -42,9 +40,8 @@ dependencies {
 
     implementation 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
-    testImplementation('org.springframework.boot:spring-boot-starter-test:2.6.2') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
+    testImplementation('org.springframework.boot:spring-boot-starter-test:2.6.2')
+            .exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 
 }
 
