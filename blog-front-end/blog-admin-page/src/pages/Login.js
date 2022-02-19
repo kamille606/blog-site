@@ -1,19 +1,54 @@
 import React, {useState} from 'react'
-import {Card, Input, Button, Spin} from 'antd'
+import {Card, Input, Button, Spin, message} from 'antd'
 import {UserOutlined, KeyOutlined} from '@ant-design/icons'
+import axios from 'axios'
+import servicePath from '../config/apiUrl'
 
 import 'antd/dist/antd.css'
 import '../static/css/Login.css'
 
-function Login() {
+function Login(props) {
+
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+
     const checkLogin = () => {
         setIsLoading(true)
+        if (!username) {
+            closeLoadingWithMsg('用户名不能为空')
+            return false
+        }
+        if (!password) {
+            closeLoadingWithMsg('密码不能为空')
+            return false
+        }
+        let dataProps = {
+            'username': username,
+            'password': password
+        }
+        axios({
+            method: 'post',
+            url: servicePath.userLogin,
+            data: dataProps,
+            withCredentials: true
+        }).then(res => {
+            setIsLoading(false)
+            if (res.data.data === true) {
+                props.history.push('/admin')
+            } else {
+                closeLoadingWithMsg('用户名或密码错误')
+            }
+        }).catch(() => {
+            closeLoadingWithMsg('网络连接超时')
+        })
+    }
+
+    const closeLoadingWithMsg = (msg) => {
+        message.error(msg)
         setTimeout(() => {
             setIsLoading(false)
-        }, 1000)
+        }, 100)
     }
 
     return (
@@ -42,7 +77,7 @@ function Login() {
                     />
                     <br/>
                     <br/>
-                    <Button type='primary' size='large' block oncClick={checkLogin}>
+                    <Button type='primary' size='large' block onClick={checkLogin}>
                         登录
                     </Button>
                 </Card>

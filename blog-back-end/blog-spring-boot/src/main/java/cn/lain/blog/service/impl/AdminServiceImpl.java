@@ -17,8 +17,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Boolean userLogin(final String username, final String password) {
-        String passwordMD5 = SecureUtil.md5(password);
-        BlogUser user = userService.getOne(
+        var passwordMD5 = SecureUtil.md5(password);
+        var user = userService.getOne(
                 new LambdaQueryWrapper<BlogUser>()
                         .eq(BlogUser::getUsername, username)
                         .eq(BlogUser::getPassword, passwordMD5)
