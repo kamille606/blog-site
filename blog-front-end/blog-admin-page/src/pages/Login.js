@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import {useNavigate} from 'react-router-dom'
 import {Card, Input, Button, Spin, message} from 'antd'
 import {UserOutlined, KeyOutlined} from '@ant-design/icons'
 import axios from 'axios'
@@ -7,11 +8,17 @@ import servicePath from '../config/apiUrl'
 import 'antd/dist/antd.css'
 import '../static/css/Login.css'
 
-function Login(props) {
+function Login() {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+
+    }, [])
 
     const checkLogin = () => {
         setIsLoading(true)
@@ -35,7 +42,7 @@ function Login(props) {
         }).then(res => {
             setIsLoading(false)
             if (res.data.data === true) {
-                props.history.push('/admin')
+                navigate('/admin')
             } else {
                 closeLoadingWithMsg('用户名或密码错误')
             }
