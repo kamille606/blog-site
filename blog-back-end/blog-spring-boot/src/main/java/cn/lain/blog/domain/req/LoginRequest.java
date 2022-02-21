@@ -3,7 +3,7 @@ package cn.lain.blog.domain.req;
 import lombok.Data;
 
 @Data
-public class UserLoginRequest {
+public class LoginRequest {
 
     private String username;
 

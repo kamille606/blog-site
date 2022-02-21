@@ -1,18 +1,32 @@
 import React, {useState} from 'react'
-import {Route, Routes} from 'react-router-dom'
+import {Route, Routes, useNavigate} from 'react-router-dom'
 import {Layout, Menu, Breadcrumb} from 'antd'
 import {UserOutlined, FileOutlined, DesktopOutlined, PieChartOutlined} from '@ant-design/icons'
+
+import ArticleAdd from "./ArticleAdd";
+import ArticleList from "./ArticleList";
 import '../static/css/Admin.css'
-import AddArticle from "./AddArticle";
 
 const {Header, Content, Footer, Sider} = Layout;
 const {SubMenu} = Menu;
 
 function Admin() {
+
+    const navigate = useNavigate()
     const [collapsed, setCollapsed] = useState(false)
+
     const onCollapse = collapsed => {
         setCollapsed(collapsed)
     };
+
+    const handleClickArticle = e => {
+        if (e.key === 'articleAdd') {
+            navigate('/admin/add')
+        } else {
+            navigate('/admin/list')
+        }
+    }
+
     return (
         <Layout style={{minHeight: '100vh'}}>
             <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
@@ -28,12 +42,13 @@ function Admin() {
                     </Menu.Item>
                     <SubMenu
                         key="sub1"
+                        onClick={handleClickArticle}
                         title={
                             <span><UserOutlined/><span>文章管理</span></span>
                         }
                     >
-                        <Menu.Item key="3">添加文章</Menu.Item>
-                        <Menu.Item key="4">文章列表</Menu.Item>
+                        <Menu.Item key="articleAdd">添加文章</Menu.Item>
+                        <Menu.Item key="articleList">文章列表</Menu.Item>
                     </SubMenu>
                     <Menu.Item key="9">
                         <FileOutlined/>
@@ -50,7 +65,9 @@ function Admin() {
                     </Breadcrumb>
                     <div style={{padding: 24, background: '#fff', minHeight: 360}}>
                         <Routes>
-                            <Route path='/' exact element={<AddArticle/>}/>
+                            <Route path='/' element={<ArticleAdd/>}/>
+                            <Route path='/add/' exact element={<ArticleAdd/>}/>
+                            <Route path='/list/' exact element={<ArticleList/>}/>
                         </Routes>
                     </div>
                 </Content>

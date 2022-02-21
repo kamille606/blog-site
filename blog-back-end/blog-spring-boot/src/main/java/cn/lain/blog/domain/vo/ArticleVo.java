@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class BlogVo {
+public class ArticleVo {
     /**
      * 主键
      */
@@ -45,4 +45,5 @@ public class BlogVo {
      * 创建时间
      */
     private Date gmtCreate;
+
 }

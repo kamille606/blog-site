@@ -11,7 +11,7 @@ spring:
     password: lain52001
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
-      read-only: true
+      read-only: false
       connection-timeout: 30000
       idle-timeout: 600000
       max-lifetime: 1800000

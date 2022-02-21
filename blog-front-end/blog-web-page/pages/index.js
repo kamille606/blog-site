@@ -81,7 +81,6 @@ const Home = (list) => {
 
 Home.getInitialProps = async (content) => {
     let id = content.query.id
-    console.log(id)
     const promise = new Promise((resolve) => {
         axios(servicePath.getBlogListByTypeId + (id == null ? 0 : id)).then(
             (res) => {
