@@ -16,8 +16,8 @@ public class BlogController {
 
     private final BlogService blogService;
 
-    @RequestMapping(value = "/article/list/{id}", method = RequestMethod.GET)
-    public ResultData<List<ArticleVo>> articleList(@PathVariable("id") final Integer typeId) {
+    @RequestMapping(value = "/article/list", method = RequestMethod.GET)
+    public ResultData<List<ArticleVo>> articleList(@RequestParam("typeId") final Integer typeId) {
         return ResultData.success(blogService.articleList(typeId));
     }
 
@@ -36,7 +36,7 @@ public class BlogController {
         return ResultData.success(blogService.articleUpdate(articleVo));
     }
 
-    @RequestMapping(value = "/article/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/article/delete", method = RequestMethod.GET)
     public ResultData<Boolean> articleDelete(@RequestParam("id") final Integer id) {
         return ResultData.success(blogService.articleDelete(id));
     }
