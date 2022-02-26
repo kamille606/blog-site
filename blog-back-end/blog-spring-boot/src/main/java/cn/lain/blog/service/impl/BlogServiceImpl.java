@@ -1,6 +1,7 @@
 package cn.lain.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import cn.lain.blog.constant.BaseConst;
 import cn.lain.blog.domain.po.BlogArticle;
 import cn.lain.blog.domain.po.BlogType;
@@ -34,7 +35,8 @@ public class BlogServiceImpl implements BlogService {
                         .eq(typeMap.get(typeId) != null, BlogArticle::getTypeId, typeId)
                         .eq(BlogArticle::getStatus, BaseConst.NORMAL)
         );
-        var articleVoList = BeanUtil.copyToList(blogList, ArticleVo.class);
+        var articleVoList = BeanUtil.copyToList(
+                blogList, ArticleVo.class, CopyOptions.create().setIgnoreProperties("content"));
         articleVoList.forEach(s -> s.setTypeName(typeMap.get(s.getTypeId())));
         return articleVoList;
     }

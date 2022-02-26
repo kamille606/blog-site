@@ -1,9 +1,9 @@
 let ipUrl = 'http://localhost:6060/api'
 
 let servicePath = {
-    getBlogInfo: ipUrl + '/blog/info?id=',
+    getBlogInfo: ipUrl + '/article/info?id=',
     getTypeList: ipUrl + '/type/list',
-    getBlogListByTypeId: ipUrl + '/blog/list/',
+    getBlogListByTypeId: ipUrl + '/article/list?typeId=',
 }
 
 export default servicePath

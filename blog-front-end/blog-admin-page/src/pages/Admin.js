@@ -66,8 +66,9 @@ function Admin() {
                     <div style={{padding: 24, background: '#fff', minHeight: 360}}>
                         <Routes>
                             <Route path='/' element={<ArticleAdd/>}/>
-                            <Route path='/add/' exact element={<ArticleAdd/>}/>
-                            <Route path='/list/' exact element={<ArticleList/>}/>
+                            <Route path='/add/' element={<ArticleAdd/>}/>
+                            <Route path='/add/:id' element={<ArticleAdd/>}/>
+                            <Route path='/list/' element={<ArticleList/>}/>
                         </Routes>
                     </div>
                 </Content>

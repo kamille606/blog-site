@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import {useLocation} from 'react-router-dom'
 import {marked} from 'marked'
 import {Row, Col, Input, Select, Button, message} from 'antd'
 import axios from 'axios'
@@ -15,13 +16,20 @@ function ArticleAdd() {
     const [articleTitle, setArticleTitle] = useState('')//文章标题
     const [articleContent, setArticleContent] = useState('')//markdown的编辑内容
     const [markdownContent, setMarkdownContent] = useState('预览内容')//html内容
-    const [introduceMD, setIntroduceMD] = useState()//简介的markdown内容
-    const [introduceHtml, setIntroduceHtml] = useState('等待编辑')//简介的html内容
+    const [articleIntroduce, setArticleIntroduce] = useState()//简介的markdown内容
+    const [markdownIntroduce, setMarkdownIntroduce] = useState('等待编辑')//简介的html内容
     const [typeInfo, setTypeInfo] = useState([])//文章类别信息
     const [selectedType, setSelectType] = useState(1)//选择的文章类别
 
+    const location = useLocation()
+
     useEffect(() => {
         getTypeList()
+        let state = location.state
+        if (state != null && state.id != null) {
+            setArticleId(state.id)
+            getArticleById(state.id)
+        }
     }, [])
 
     const renderer = new marked.Renderer()
@@ -43,17 +51,13 @@ function ArticleAdd() {
     }
 
     const changeIntroduce = (e) => {
-        setIntroduceMD(e.target.value)
+        setArticleIntroduce(e.target.value)
         let html = marked(e.target.value)
-        setIntroduceHtml(html)
+        setMarkdownIntroduce(html)
     }
 
     const getTypeList = () => {
-        axios({
-            method: 'get',
-            url: servicePath.getTypeList,
-            withCredentials: true
-        }).then(res => {
+        axios.get(servicePath.getTypeList).then(res => {
             setTypeInfo(res.data.data)
         })
     }
@@ -68,7 +72,7 @@ function ArticleAdd() {
         } else if (!articleContent) {
             message.error('文章内容不能为空')
             return false
-        } else if (!introduceMD) {
+        } else if (!articleIntroduce) {
             message.error('简介不能为空')
             return false
         }
@@ -76,9 +80,8 @@ function ArticleAdd() {
             typeId: selectedType,
             title: articleTitle,
             content: articleContent,
-            introduce: introduceMD
+            introduce: articleIntroduce
         }
-
         if (articleId === 0) {
             axios.post(servicePath.addArticle, dataProps).then(res => {
                 let id = res.data.data;
@@ -101,6 +104,20 @@ function ArticleAdd() {
         }
     }
 
+    const getArticleById = (id) => {
+        axios.get(servicePath.getArticleInfo + id).then(res => {
+            let articleInfo = res.data.data
+            setArticleTitle(articleInfo.title)
+            setArticleContent(articleInfo.content)
+            let html = marked(articleInfo.content)
+            setMarkdownContent(html)
+            setArticleIntroduce(articleInfo.introduce)
+            let intro = marked(articleInfo.introduce)
+            setMarkdownIntroduce(intro)
+            setSelectType(articleInfo.typeId)
+        })
+    }
+
     return (
         <div>
             <Row gutter={5}>
@@ -109,6 +126,7 @@ function ArticleAdd() {
                         <Col span={20}>
                             <Input
                                 placeholder="博客标题"
+                                value={articleTitle}
                                 size="large"
                                 onChange={e => {
                                     setArticleTitle(e.target.value)
@@ -119,7 +137,7 @@ function ArticleAdd() {
                             &nbsp;
                             <Select defaultValue={selectedType} onChange={(value) => {
                                 setSelectType(value)
-                            }} size="large">
+                            }} size="large" key={selectedType}>
                                 {
                                     typeInfo.map((item, index) => {
                                         return (<Option key={index} value={item.id}>{item.typeName}</Option>)
@@ -132,9 +150,10 @@ function ArticleAdd() {
                     <Row gutter={10}>
                         <Col span={12}>
                             <TextArea
-                                className="markdown-content"
                                 rows={35}
-                                placeholder="文章内容"
+                                className='markdown-content'
+                                placeholder='文章内容'
+                                value={articleContent}
                                 onChange={changeContent}
                             />
                         </Col>
@@ -158,14 +177,14 @@ function ArticleAdd() {
                             <br/>
                             <TextArea
                                 rows={4}
-                                value={introduceMD}
+                                value={articleIntroduce}
                                 onChange={changeIntroduce}
                                 onPressEnter={changeIntroduce}
                                 placeholder="文章简介"
                             />
                             <br/><br/>
                             <div className="introduce-html"
-                                 dangerouslySetInnerHTML={{__html: '文章简介:' + introduceHtml}}
+                                 dangerouslySetInnerHTML={{__html: '文章简介:' + markdownIntroduce}}
                             >
                             </div>
                         </Col>
