@@ -1,6 +1,7 @@
 package cn.lain.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.lain.blog.constant.BaseConst;
 import cn.lain.blog.domain.po.BlogArticle;
 import cn.lain.blog.domain.po.BlogType;
 import cn.lain.blog.domain.vo.ArticleVo;
@@ -11,10 +12,8 @@ import cn.lain.blog.service.BlogService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,28 +25,29 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<ArticleVo> articleList(final Integer typeId) {
-        List<BlogType> typeList = typeService.list();
-        Map<Integer, String> typeMap = typeList.stream().collect(
+        var typeList = typeService.list();
+        var typeMap = typeList.stream().collect(
                 Collectors.toMap(BlogType::getId, BlogType::getTypeName, (x1, x2) -> x1)
         );
-        List<BlogArticle> blogList;
-        if (typeMap.get(typeId) == null) {
-            blogList = articleService.list();
-        } else {
-            blogList = articleService.list(
-                    new LambdaQueryWrapper<BlogArticle>().eq(BlogArticle::getTypeId, typeId)
-            );
-        }
-        List<ArticleVo> articleVoList = BeanUtil.copyToList(blogList, ArticleVo.class);
+        var blogList = articleService.list(
+                new LambdaQueryWrapper<BlogArticle>()
+                        .eq(typeMap.get(typeId) != null, BlogArticle::getTypeId, typeId)
+                        .eq(BlogArticle::getStatus, BaseConst.NORMAL)
+        );
+        var articleVoList = BeanUtil.copyToList(blogList, ArticleVo.class);
         articleVoList.forEach(s -> s.setTypeName(typeMap.get(s.getTypeId())));
         return articleVoList;
     }
 
     @Override
     public ArticleVo articleInfo(final Integer id) {
-        BlogArticle article = articleService.getById(id);
-        BlogType type = typeService.getById(article.getTypeId());
-        ArticleVo articleVo = BeanUtil.copyProperties(article, ArticleVo.class);
+        var article = articleService.getOne(
+                new LambdaQueryWrapper<BlogArticle>()
+                        .eq(BlogArticle::getId, id)
+                        .eq(BlogArticle::getStatus, BaseConst.NORMAL)
+        );
+        var type = typeService.getById(article.getTypeId());
+        var articleVo = BeanUtil.copyProperties(article, ArticleVo.class);
         articleVo.setTypeName(type.getTypeName());
         return articleVo;
     }
@@ -59,14 +59,20 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Integer articleAdd(ArticleVo article) {
-        BlogArticle blogArticle = BeanUtil.copyProperties(article, BlogArticle.class);
+        var blogArticle = BeanUtil.copyProperties(article, BlogArticle.class);
         return articleService.save(blogArticle) ? blogArticle.getId() : 0;
     }
 
     @Override
     public Boolean articleUpdate(ArticleVo article) {
-        BlogArticle blogArticle = BeanUtil.copyProperties(article, BlogArticle.class);
+        var blogArticle = BeanUtil.copyProperties(article, BlogArticle.class);
         return articleService.updateById(blogArticle);
+    }
+
+    @Override
+    public Boolean articleDelete(Integer id) {
+        return articleService.updateById(BlogArticle.builder()
+                .id(id).status(BaseConst.DELETE).build());
     }
 
 }

@@ -36,6 +36,11 @@ public class BlogController {
         return ResultData.success(blogService.articleUpdate(articleVo));
     }
 
+    @RequestMapping(value = "/article/delete", method = RequestMethod.POST)
+    public ResultData<Boolean> articleDelete(@RequestParam("id") final Integer id) {
+        return ResultData.success(blogService.articleDelete(id));
+    }
+
     @RequestMapping(value = "/type/list", method = RequestMethod.GET)
     public ResultData<List<TypeVo>> typeList() {
         return ResultData.success(blogService.typeList());

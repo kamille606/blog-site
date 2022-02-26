@@ -17,4 +17,6 @@ public interface BlogService {
 
     Boolean articleUpdate(ArticleVo article);
 
+    Boolean articleDelete(Integer id);
+
 }
