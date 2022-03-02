@@ -42,9 +42,7 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public ArticleVo articleInfo(final Integer id) {
         var article = articleService.getOne(
-                new LambdaQueryWrapper<BlogArticle>()
-                        .eq(BlogArticle::getId, id)
-        );
+                new LambdaQueryWrapper<BlogArticle>().eq(BlogArticle::getId, id));
         var type = typeService.getById(article.getTypeId());
         var articleVo = BeanUtil.copyProperties(article, ArticleVo.class);
         articleVo.setTypeName(type.getTypeName());
@@ -64,8 +62,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Boolean articleUpdate(ArticleVo article) {
-        var blogArticle = BeanUtil.copyProperties(article, BlogArticle.class);
-        return articleService.updateById(blogArticle);
+        return articleService.updateById(BeanUtil.copyProperties(article, BlogArticle.class));
     }
 
     @Override
