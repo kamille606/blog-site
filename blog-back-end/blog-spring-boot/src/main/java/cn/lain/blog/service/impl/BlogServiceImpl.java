@@ -2,7 +2,6 @@ package cn.lain.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import cn.lain.blog.constant.BaseConst;
 import cn.lain.blog.domain.po.BlogArticle;
 import cn.lain.blog.domain.po.BlogType;
 import cn.lain.blog.domain.vo.ArticleVo;
@@ -33,7 +32,6 @@ public class BlogServiceImpl implements BlogService {
         var blogList = articleService.list(
                 new LambdaQueryWrapper<BlogArticle>()
                         .eq(typeMap.get(typeId) != null, BlogArticle::getTypeId, typeId)
-                        .eq(BlogArticle::getStatus, BaseConst.NORMAL)
         );
         var articleVoList = BeanUtil.copyToList(
                 blogList, ArticleVo.class, CopyOptions.create().setIgnoreProperties("content"));
@@ -46,7 +44,6 @@ public class BlogServiceImpl implements BlogService {
         var article = articleService.getOne(
                 new LambdaQueryWrapper<BlogArticle>()
                         .eq(BlogArticle::getId, id)
-                        .eq(BlogArticle::getStatus, BaseConst.NORMAL)
         );
         var type = typeService.getById(article.getTypeId());
         var articleVo = BeanUtil.copyProperties(article, ArticleVo.class);
@@ -73,8 +70,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Boolean articleDelete(Integer id) {
-        return articleService.updateById(BlogArticle.builder()
-                .id(id).status(BaseConst.DELETE).build());
+        return articleService.removeById(BlogArticle.builder().id(id).build());
     }
 
 }

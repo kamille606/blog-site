@@ -1,7 +1,7 @@
 package cn.lain.blog.domain.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 
 import java.util.Date;
@@ -12,7 +12,7 @@ public class BlogUser {
     /**
      * 主键
      */
-    @TableId(type = IdType.AUTO)
+    @TableId
     private Integer id;
 
     /**
@@ -28,6 +28,7 @@ public class BlogUser {
     /**
      * 数据状态00删除01正常
      */
+    @TableLogic(value = "01", delval = "00")
     private String status;
 
     /**

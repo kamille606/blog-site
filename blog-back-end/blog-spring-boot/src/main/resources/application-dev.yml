@@ -41,3 +41,6 @@ mybatis-plus:
   type-aliases-super-type: java.lang.Object
   type-enums-package: cn.lain.blog.constant.enums
   mapper-locations: classpath:mapper/*.xml
+  global-config:
+    db-config:
+      id-type: auto

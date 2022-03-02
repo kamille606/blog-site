@@ -17,9 +17,9 @@ import servicePath from "../config/api";
 
 const Home = (list) => {
 
-    const renderer = new marked.Renderer()
-
     const [myList, setMyList] = useState(list.data)
+
+    const renderer = new marked.Renderer()
     useEffect(() => {
         setMyList(list.data)
     })
@@ -63,7 +63,7 @@ const Home = (list) => {
                                 </div>
                                 <div className="content"
                                      dangerouslySetInnerHTML={{__html: marked('' + item.introduce)}}
-                                > </div>
+                                ></div>
                             </List.Item>
                         )}
                     />
