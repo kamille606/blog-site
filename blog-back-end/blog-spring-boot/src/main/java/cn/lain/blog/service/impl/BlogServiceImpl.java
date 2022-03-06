@@ -10,6 +10,7 @@ import cn.lain.blog.mapper.BlogArticleService;
 import cn.lain.blog.mapper.BlogTypeService;
 import cn.lain.blog.service.BlogService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,12 @@ public class BlogServiceImpl implements BlogService {
                 blogList, ArticleVo.class, CopyOptions.create().setIgnoreProperties("content"));
         articleVoList.forEach(s -> s.setTypeName(typeMap.get(s.getTypeId())));
         return articleVoList;
+    }
+
+    @Override
+    public void articlePage() {
+        Page<BlogArticle> page = new Page<>(1, 3);
+        articleService.page(page);
     }
 
     @Override

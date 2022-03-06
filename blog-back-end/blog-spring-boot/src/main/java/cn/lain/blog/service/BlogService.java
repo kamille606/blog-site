@@ -9,6 +9,8 @@ public interface BlogService {
 
     List<ArticleVo> articleList(Integer typeId);
 
+    void articlePage();
+
     ArticleVo articleInfo(Integer id);
 
     List<TypeVo> typeList();

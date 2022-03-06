@@ -4,7 +4,7 @@ import cn.hutool.crypto.SecureUtil;
 import cn.lain.blog.domain.po.BlogUser;
 import cn.lain.blog.mapper.BlogUserService;
 import cn.lain.blog.service.AdminService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class AdminServiceImpl implements AdminService {
     public Boolean userLogin(final String username, final String password) {
         var passwordMD5 = SecureUtil.md5(password);
         var user = userService.getOne(
-                new LambdaQueryWrapper<BlogUser>()
+                Wrappers.lambdaQuery(BlogUser.class)
                         .eq(BlogUser::getUsername, username)
                         .eq(BlogUser::getPassword, passwordMD5)
         );
